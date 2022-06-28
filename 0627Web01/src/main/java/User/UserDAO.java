@@ -1,6 +1,7 @@
 package User;
 // Data Access Object  = 데이터에 접근하는 역할을 맡은 객체
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -68,20 +69,27 @@ public class UserDAO {
 		return -2; // db 오류
 	}
 	
+	
+	
 	// 회원가입 기능 구현
 	public int join(User user) {
+		// 실행할 쿼리문 준비
 		String SQL = "INSERT INTO TABLE_USER VALUES(?,?,?,?)";
-		try {
-			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, user.getUserID());
-			pstmt.setString(2, user.getUserPassword());
-			pstmt.setString(1, user.getUserName());
-			pstmt.setString(1, user.getUserGender());
-			return pstmt.executeUpdate();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+		// 아이디 , 비번, 이름, 성별
+	
+			try {
+				pstmt = conn.prepareStatement(SQL);
+				pstmt.setString(1, user.getUserID());
+				pstmt.setString(2, user.getUserPassword());
+				pstmt.setString(3, user.getUserName());
+				pstmt.setString(4, user.getUserGender());
+				
+				return pstmt.executeUpdate(); // 쿼리 실행 1
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace(); // 중복 발생이나 어떤 이유로 예외가 발생하면
+			}
+			return -1; // 중복 발생
 		}
-		return -1;
-	}
+	
 }

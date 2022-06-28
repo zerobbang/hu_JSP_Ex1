@@ -23,7 +23,7 @@
     <c:if test="${num <= 50}">
     <c:out value ="50보다 작거나 같음" />
     </c:if>
-    
+    <br>
     <%
     	int num2 = 100;
     	if(num2>50)
@@ -64,9 +64,9 @@
    	
    	<!-- jstl 버전 -->
    	<c:set var="target" value="6"/>
-   	<c:set var="numArr" value="{1,6,9}"/>
+ 	<c:set var="numArr" value="{1,6,9}"/>
    	<br>
-   	<c:forEach var="item" items="${numArr}">
+	<c:forEach var="item" items="${numArr}">
    	<c:if test="${item==target}">
    		<c:out value = "일치2"/>
    	</c:if>
@@ -74,9 +74,5 @@
    		<c:out value = "불일치2"/>
    	</c:if>
    	</c:forEach>
-
-
-   	
-	
 </body>
 </html>
