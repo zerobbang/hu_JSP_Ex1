@@ -6,9 +6,7 @@
 <%@ page import = "java.io.PrintWriter" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 
-<!--  -->
 <!-- User패키지에 클래서 User -->
-
 <jsp:useBean id="User" class="User.User" scope="page"></jsp:useBean>
 <jsp:setProperty name="User" property="userID" />
 <jsp:setProperty name="User" property="userPassword" />

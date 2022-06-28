@@ -32,12 +32,17 @@ public class UserDAO {
 	
 	// 로그인 기능 수행 함수
 	public int login(String userID, String userPassword) {
-		// 실행할 쿼리, 유저가 친 해당 아이디 비번 가져옴.,
+		// 유저가 친 해당 아이디 비번 가져옴
+
+		// 실행할 쿼리문 준비
 		String SQL = "SELECT userPassword FROM TABLE_USER WHERE userID=?";
+		// 유저로부터 입력받은 userID와 동일한 값을 갖는 데이터의 suerPassword를 가져온다.
 		
 		try {
 			System.out.println("conn : "+conn);
+
 			// 문자열 쿼리를 pstmt에 대입
+			// 실행할 쿼리문을 prepareStatement로 쿼리 실행 준비
 			pstmt = conn.prepareStatement(SQL);
 			
 			// 첫 번째 물음표에 userId 값 세팅
