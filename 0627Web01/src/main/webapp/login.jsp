@@ -92,10 +92,11 @@
 <%
 //현재 로그인 되어있는데 회원 가입 페이지를 누르면 알림창이 뜨면서 접근 물가능 하게 한다.
 			String userID = null;
-			
+			String userName = null;
 			if(session.getAttribute("userID")!=null){
 				// 세션이 유저 id가 비어있지 않으면 가져온다.
 				userID = (String)session.getAttribute("userID");
+				userName = (String)session.getAttribute("userName");
 			}
 			if(userID != null){
 				PrintWriter script = response.getWriter();

@@ -10,6 +10,8 @@
 <jsp:useBean id="User" class="User.User" scope="page"></jsp:useBean>
 <jsp:setProperty name="User" property="userID" />
 <jsp:setProperty name="User" property="userPassword" />
+<jsp:setProperty name="User" property="userName" />
+<jsp:setProperty name="User" property="userGender" />
 
 
 
@@ -24,6 +26,7 @@
 	<%
 	// 현재 로그인 되어있는데 또 로그인을 하면 이미 로그인 되어있다고 알림
 		String userID = null;
+
 		if(session.getAttribute("userID")!=null){
 			// 세션이 유저 id가 비어있지 않으면 가져온다.
 			userID = (String)session.getAttribute("userID");

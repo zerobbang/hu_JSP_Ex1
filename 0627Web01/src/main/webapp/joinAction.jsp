@@ -72,6 +72,8 @@
 				script.println("history.back();");
 				script.println("</script>");
 			}else{
+				session.setAttribute("userID", User.getUserID());
+				
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
 				script.println("alert('처리하지 못한 이상한 에러가 발생했습니다.')");

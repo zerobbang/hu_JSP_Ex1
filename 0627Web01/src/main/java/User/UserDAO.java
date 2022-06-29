@@ -36,7 +36,8 @@ public class UserDAO {
 		// 유저가 친 해당 아이디 비번 가져옴
 
 		// 실행할 쿼리문 준비
-		String SQL = "SELECT userPassword FROM TABLE_USER WHERE userID=?";
+		 String SQL = "SELECT userPassword FROM TABLE_USER WHERE userID=?"; 
+		// String SQL = "SELECT * FROM TABLE_USER WHERE userID=?";
 		// 유저로부터 입력받은 userID와 동일한 값을 갖는 데이터의 suerPassword를 가져온다.
 		
 		try {

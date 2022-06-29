@@ -1,32 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
-<%--  	<div>hello</div>
-	<div>안녕</div>
-	<%= new java.util.Date() %>
-	<br>
-	<%
-		for(int i=0; i<10; i++){
-			// out.println(i);
-			
-	%>
-	<%= i %>
-	<br>
-	<%	}
-		%>  --%>
-		
-	<!-- 로그인 만들기 -->
-	<a href="login.jsp">로그인</a>
-	<br>
-	<a href="join.jsp">회원 가입</a>
-	<br>
-	<a href="logoutAction.jsp">로그 아웃</a>
+<body>	
+	
+	<!-- 로그인이 되어있는 상태일 때는 로그인,회원가입 페이지 안보이게 -->
+	<!--  -->
+	<jsp:include page="header.jsp"></jsp:include>
+
 		
 </body>
 </html>
