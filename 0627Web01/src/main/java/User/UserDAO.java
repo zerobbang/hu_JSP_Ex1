@@ -7,6 +7,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 // 생성자
 public class UserDAO {
 	private Connection conn;	// 자바랑 db연결
@@ -32,12 +38,12 @@ public class UserDAO {
 	
 	
 	// 로그인 기능 수행 함수
-	public int login(String userID, String userPassword) {
+	public int login(String userID, String userPassword, HttpSession session) {
 		// 유저가 친 해당 아이디 비번 가져옴
 
 		// 실행할 쿼리문 준비
-		 String SQL = "SELECT userPassword FROM TABLE_USER WHERE userID=?"; 
-		// String SQL = "SELECT * FROM TABLE_USER WHERE userID=?";
+		// String SQL = "SELECT userPassword FROM TABLE_USER WHERE userID=?"; 
+		 String SQL = "SELECT * FROM TABLE_USER WHERE userID=?";
 		// 유저로부터 입력받은 userID와 동일한 값을 갖는 데이터의 suerPassword를 가져온다.
 		
 		try {
@@ -52,10 +58,17 @@ public class UserDAO {
 			
 			// 프로그래밍 언어에서 인덱스는 0부터 시작이지만 쿼리에서는 1부터 시작.
 			rs = pstmt.executeQuery(); // 쿼리 실행
-
+			
+		
 			if(rs.next()) {
+				// user 받아오기
+				System.out.println(rs.getString(3));
+				String userName = rs.getString(3);
+				// System.out.println("userName : "+userName);
+				session.setAttribute("userName", userName);
+				// request.getSession().setAttribute("userName", userName);
 				//결과 리스트의 다음 행의 값이 존재하면
-				if(rs.getString(1).equals(userPassword)) {
+				if(rs.getString(2).equals(userPassword)) {
 					// 남은 것의 첫번째 값이 login 함수로 호출 할 때 전달받은 비번과 같은지 검사
 					return 1; // 로그인 성공
 				}else {

@@ -1,3 +1,4 @@
+<%@page import="java.io.Console"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!-- DAO 인스턴스 -->
@@ -41,14 +42,14 @@
 		
 	
 		UserDAO userDAO = new UserDAO();
-		int result = userDAO.login(User.getUserID(), User.getUserPassword());
+		int result = userDAO.login(User.getUserID(), User.getUserPassword(),session);
 		
 		// 1이면 로그인 성공
 		// 로그인 실행 결과에 따라 화면에 띄울 스크립트 생성
 		if(result==1){
 			// 로그인이 되면 session에 값 넣어주기
 			session.setAttribute("userID", User.getUserID());
-			
+			// session.getAttribute("userName");
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			// 대소문자 조심

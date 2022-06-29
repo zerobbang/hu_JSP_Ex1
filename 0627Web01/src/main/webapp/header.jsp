@@ -105,7 +105,7 @@
  		
  		
       <c:if test="${!empty sessionScope.userID}">
-        <c:out value="${sessionScope.userID}"/>
+        <c:out value="${sessionScope.userName}님"/>
       </c:if>
 	
 	

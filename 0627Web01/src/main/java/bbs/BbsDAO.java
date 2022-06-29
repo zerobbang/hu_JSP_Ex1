@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 // 생성자
 public class BbsDAO {
@@ -16,7 +18,6 @@ public class BbsDAO {
 	public BbsDAO() {
 		try {
 			String dbURL = "jdbc:mysql://localhost:3306/JSP_TEST?serverTimezone=UTC";
-			// jdbc : java db connectivity
 			String dbID = "root";
 			String dbPassword = "system123";
 			
@@ -37,17 +38,24 @@ public class BbsDAO {
 		// 실행할 쿼리문 준비
 		
 		 String SQL = "INSERT INTO BBS VALUES (?,?,?,?,?,?)"; 
+		 
+		 System.out.println("getNext() : "+getNext());
+		 System.out.println("bbsTitle : "+bbsTitle);
 		
 		try {
-			pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1,getNext() );		// id
-			pstmt.setString(2,bbsTitle );	// title
-			pstmt.setString(3,userID );			// writer
-			pstmt.setString(4,getDate() );			// crDate
-			pstmt.setString(5,bbsContent );			// bbsContent
-			pstmt.setInt(6,1 );			// bbsAvailable
+			int bbsNum = getNext();
+			String today = getDate();
 			
-			return pstmt.executeUpdate(); // update - inserst
+			pstmt = conn.prepareStatement(SQL);
+			
+			pstmt.setInt(1,bbsNum);		// id
+			pstmt.setString(2,bbsTitle);	// title
+			pstmt.setString(3,userID);			// writer
+			pstmt.setString(4,today);			// crDate
+			pstmt.setString(5,bbsContent );			// bbsContent
+			pstmt.setInt(6,1);			// bbsAvailable
+			
+			return pstmt.executeUpdate(); // update - insert
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -56,12 +64,72 @@ public class BbsDAO {
 		return -1; // db 오류
 	}
 	
+	
 	public int getNext() {
-		return 0;
+		String SQL = "select max(bbsID) from BBS";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			rs =  pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1)+1;	//다음에 들어갈수 = 현재 들어있는 최고숫자 +1
+			}
+			return 1;	// 아무것도 읽을게 없었으면. 첫번째글
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;	//에러
 	}
 	
 	public String getDate() {
-		return "0";
+		String SQL = "select NOW() from dual";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			rs =  pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getString(1);	//데이터리스트의 첫번째꺼
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	
+	// 글 목록 가져오는 함수
+	// 쿼리 인자로 전달받은 글 번호부터 최신 순으로 10개만 가져오는 함수
+	// 그런데 함수는 페이지 번호다.
+	// 그러면 해당페이지의 마지막 번호가 몇 페이지인지 분석해야
+	public ArrayList<Bbs> getList(int pageNumber){
+		String SQL = "select * from BBS where bbsID < ?\r\n"
+				+ "and bbsAvailable = 1\r\n"
+				+ "order by bbsID desc \r\n"
+				+ "limit 10";
+		
+		ArrayList<Bbs> list = new ArrayList<Bbs>(); // 껍데기 리스트
+		try {
+				pstmt = conn.prepareStatement(SQL);
+				int startNum = getNext() - (pageNumber - 1) * 10;
+				// 해당 퓨페이지의 시작 번호 
+				pstmt.setInt(1, startNum);
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					Bbs bbs = new Bbs();
+					
+					bbs.setBbsID(rs.getInt(1));
+					bbs.setBbsTitle(rs.getString(2));
+					bbs.setWriter(rs.getString(3));
+					bbs.setCrDate(rs.getString(4));
+					bbs.setBbsContent(rs.getString(5));
+					bbs.setBbsAvailable(rs.getInt(6));
+					
+					// 검색된 글들을 리스트에 더해주기
+					list.add(bbs);
+				}
+				
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
 	}
 
 	
