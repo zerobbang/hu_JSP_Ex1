@@ -1,3 +1,5 @@
+<!-- 출력 -->
+<%@ page import = "java.io.PrintWriter" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -87,6 +89,22 @@
 <link href="signin.css" rel="stylesheet">
 </head>
 <body class="text-center">
+<%
+//현재 로그인 되어있는데 회원 가입 페이지를 누르면 알림창이 뜨면서 접근 물가능 하게 한다.
+			String userID = null;
+			
+			if(session.getAttribute("userID")!=null){
+				// 세션이 유저 id가 비어있지 않으면 가져온다.
+				userID = (String)session.getAttribute("userID");
+			}
+			if(userID != null){
+				PrintWriter script = response.getWriter();
+				script.println("<script>");
+				script.println("alert('이미 로그인이 되어있습니다.')");
+				script.println("location.href='index.jsp'");
+				script.println("</script>");
+			}
+%>
 	<!-- form 안의 데이터들이 submit되면 name의 이름을 가지고 백단으로 날아간다. -->
 	<main class="form-signin w-100 m-auto">
 		<form action="loginAction.jsp" method="POST">

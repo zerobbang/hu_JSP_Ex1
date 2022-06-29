@@ -59,11 +59,23 @@
     	}
    	%>
    	</form>
+   	<br><br>
+   	
+   
+   	
+   	<!-- JSTL to JSP -->
+   	<c:set var="target" value="해피데이"/>
+   	<% String target2 = (String) pageContext.getAttribute("target"); %>
+   	<%= target2 %>
+   	<br>
+   	<!-- JSP to JSTL -->
+   	<% String target3 = "비온 뒤 맑음";
+   		pageContext.setAttribute("target4", target3);%>
+   	<c:out value="${target4}"/>
    	
    	
-   	
+   	<br>
    	<!-- jstl 버전 -->
-   	<c:set var="target" value="6"/>
  	<c:set var="numArr" value="{1,6,9}"/>
    	<br>
 	<c:forEach var="item" items="${numArr}">

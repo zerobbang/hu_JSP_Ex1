@@ -25,6 +25,8 @@
 	<a href="login.jsp">로그인</a>
 	<br>
 	<a href="join.jsp">회원 가입</a>
+	<br>
+	<a href="logoutAction.jsp">로그 아웃</a>
 		
 </body>
 </html>

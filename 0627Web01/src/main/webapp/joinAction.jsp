@@ -24,6 +24,21 @@
 </head>
 <body>
 	<%
+	// 프론트와 백엔드에서 각각 검사해준다. ( login, join, loginAction, joinAction)
+	String userID = null;
+	
+	if(session.getAttribute("userID")!=null){
+		// 세션이 유저 id가 비어있지 않으면 가져온다.
+		userID = (String)session.getAttribute("userID");
+	}
+	if(userID != null){
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('이미 로그인이 되어있습니다.')");
+		script.println("location.href='index.jsp'");
+		script.println("</script>");
+	}
+	
 		UserDAO userDAO = new UserDAO();
 		int result = userDAO.join(User);
 		
@@ -36,11 +51,13 @@
 			script.println("</script>");
 			return; // 회원가입 과정 종료
 		}else{
+			
+			
 			if(result==1){	//회원가입 성공시
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("location.href='login.jsp'");
-			script.println("</script>");
+				PrintWriter script = response.getWriter();
+				script.println("<script>");
+				script.println("location.href='login.jsp'");
+				script.println("</script>");
 			}
 			else if(result==-1){	 //중복발생
 				PrintWriter script = response.getWriter();
@@ -54,8 +71,7 @@
 				script.println("alert('빈칸이 있습니다.')");
 				script.println("history.back();");
 				script.println("</script>");
-			}
-			else{
+			}else{
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
 				script.println("alert('처리하지 못한 이상한 에러가 발생했습니다.')");
