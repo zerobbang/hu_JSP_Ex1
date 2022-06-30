@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="bbs.BbsDAO" %>
+<%@ page import="bbs.Bbs" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,13 +39,33 @@
 				<th>작성자</th>
 				<th>작성일</th>
 			</thead>
-			<tobody>
+ 			<tobody>
 				<tr>
-					<td>1</td>
+<!-- 					<td>1</td>
 					<td>자바</td>
 					<td>홍길동</td>
 					<td>2022-06-29</td>
-				</tr>
+				</tr> -->
+			
+			<%
+				int pageNumber = 1; // 기본 설정
+				if(request.getParameter("pageNumber")!= null){
+					// 이미 페이지 번호가 요청된게 있으면 그것으로 세팅
+					pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+				}
+				BbsDAO bbsDAO = new BbsDAO();
+				out.println("현재 페이지 : "+pageNumber);
+				ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
+				out.println("  가져온 사이즈 : "+list.size());
+				for(int i=0; i<list.size();i++){
+			%>
+					<tr>
+						<td><%=list.get(i).getBbsID() %></td>
+						<td><%=list.get(i).getBbsTitle() %></td>
+						<td><%=list.get(i).getBbsContent()%></td>
+						<td><%=list.get(i).getCrDate() %></td>
+					</tr>
+			<% } %>
 			</tobody>
 		</table>
 		<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>

@@ -60,6 +60,16 @@ public class BbsDAO {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) {
+					// 예외가 발생할 수 있는 문장 
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return -1; // db 오류
 	}
@@ -76,6 +86,16 @@ public class BbsDAO {
 			return 1;	// 아무것도 읽을게 없었으면. 첫번째글
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) {
+					// 예외가 발생할 수 있는 문장 
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return -1;	//에러
 	}
@@ -90,6 +110,17 @@ public class BbsDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			
+		}finally {
+			try {
+				if(pstmt!=null) {
+					// 예외가 발생할 수 있는 문장 
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return "";
 	}
@@ -107,12 +138,15 @@ public class BbsDAO {
 		
 		ArrayList<Bbs> list = new ArrayList<Bbs>(); // 껍데기 리스트
 		try {
-				pstmt = conn.prepareStatement(SQL);
 				int startNum = getNext() - (pageNumber - 1) * 10;
+				pstmt = conn.prepareStatement(SQL);
+				// int startNum = getNext() - (pageNumber - 1) * 10;
+				// 위 코드가 저 자리에 있으면 위에서 pstmt를 불러왔는데 다시 getNext를 불러오면서 또 pstmt를 불러오게 되면서 에러 발생
 				// 해당 퓨페이지의 시작 번호 
 				pstmt.setInt(1, startNum);
+				System.out.println("sN : "+startNum);
 				rs = pstmt.executeQuery();
-				if(rs.next()) {
+				while(rs.next()) {
 					Bbs bbs = new Bbs();
 					
 					bbs.setBbsID(rs.getInt(1));
@@ -128,6 +162,17 @@ public class BbsDAO {
 				
 		} catch (Exception e) {
 			// TODO: handle exception
+		}finally {
+			// 코드 위치 바꾸는 거 말고 이렇게 해주는 게 정석
+			try {
+				if(pstmt!=null) {
+					// 예외가 발생할 수 있는 문장 
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}

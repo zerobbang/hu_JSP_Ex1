@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.ServletRequest;
@@ -79,6 +79,16 @@ public class UserDAO {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) {
+					// 예외가 발생할 수 있는 문장 
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return -2; // db 오류
 	}
@@ -102,6 +112,16 @@ public class UserDAO {
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace(); // 중복 발생이나 어떤 이유로 예외가 발생하면
+			}finally {
+				try {
+					if(pstmt!=null) {
+						// 예외가 발생할 수 있는 문장 
+						pstmt.close();
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			return -1; // 중복 발생
 		}
